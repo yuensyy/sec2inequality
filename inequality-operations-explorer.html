@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inequality Operations - Complete Interactive Guide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=IBM+Plex+Mono:wght@400;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #E63946;
+            --secondary: #F1FAEE;
+            --accent: #A8DADC;
+            --dark: #1D3557;
+            --highlight: #457B9D;
+            --success: #06D6A0;
+            --warning: #FFD166;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--dark);
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            color: white;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.95);
+            font-weight: 600;
+        }
+
+        .operation-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            animation: fadeIn 0.8s ease-out 0.4s both;
+        }
+
+        .tab-button {
+            background: white;
+            border: 4px solid transparent;
+            padding: 1.5rem 2rem;
+            border-radius: 16px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            min-width: 280px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .tab-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .tab-button.active {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, #fff5f5, #ffe5e7);
+            transform: scale(1.05);
+        }
+
+        .tab-title {
+            font-size: 1.2rem;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .tab-subtitle {
+            font-size: 0.9rem;
+            color: var(--highlight);
+            font-weight: 600;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: visible;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, var(--primary), var(--highlight));
+            border-radius: 24px 24px 0 0;
+            z-index: 1;
+        }
+
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .emoji {
+            font-size: 2.5rem;
+        }
+
+        .demo-section {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            padding: 2rem;
+            border-radius: 16px;
+            margin: 2rem 0;
+            overflow: visible;
+        }
+
+        .number-line-demo {
+            position: relative;
+            height: 120px;
+            margin: 3rem 1rem;
+            background: white;
+            border-radius: 12px;
+            padding: 4rem 3rem 1.5rem 3rem;
+            overflow: visible;
+        }
+
+        .line {
+            position: absolute;
+            top: 60px;
+            left: 8%;
+            right: 8%;
+            height: 4px;
+            background: var(--dark);
+            z-index: 1;
+        }
+
+        .line::before,
+        .line::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .line::before {
+            left: -12px;
+            border-width: 10px 10px 10px 0;
+            border-color: transparent var(--dark) transparent transparent;
+        }
+
+        .line::after {
+            right: -12px;
+            border-width: 10px 0 10px 10px;
+            border-color: transparent transparent transparent var(--dark);
+        }
+
+        .tick-mark {
+            position: absolute;
+            top: 60px;
+            width: 2px;
+            height: 20px;
+            background: #999;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+        }
+
+        .tick-label-number {
+            position: absolute;
+            top: 75px;
+            transform: translateX(-50%);
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #666;
+            z-index: 1;
+        }
+
+        .number-marker {
+            position: absolute;
+            top: 60px;
+            transform: translate(-50%, -50%);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .number-label {
+            position: absolute;
+            top: 10px;
+            transform: translateX(-50%);
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 700;
+            font-size: 1.3rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+
+        .control-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .slider-group {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .operation-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--dark);
+            display: block;
+            text-align: center;
+        }
+
+        .slider-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--dark);
+            display: block;
+        }
+
+        .slider-value {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 1.5rem;
+            margin-left: 1rem;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 12px;
+            border-radius: 6px;
+            background: linear-gradient(to right, var(--accent), var(--highlight));
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(230, 57, 70, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 6px 20px rgba(230, 57, 70, 0.6);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 4px 12px rgba(230, 57, 70, 0.4);
+        }
+
+        .action-button {
+            background: linear-gradient(135deg, var(--primary), #d62839);
+            color: white;
+            border: none;
+            padding: 1.5rem 3rem;
+            border-radius: 16px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            box-shadow: 0 10px 30px rgba(230, 57, 70, 0.3);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .action-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(230, 57, 70, 0.4);
+        }
+
+        .action-button:active {
+            transform: translateY(-1px);
+        }
+
+        .explanation-box {
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            padding: 2rem;
+            border-radius: 16px;
+            margin: 2rem 0;
+            border-left: 6px solid var(--success);
+        }
+
+        .explanation-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .explanation-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--dark);
+        }
+
+        .step-indicator {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            border-left: 5px solid var(--highlight);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .highlight-box {
+            background: var(--warning);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            border: 3px solid #f7b731;
+        }
+
+        .highlight-box strong {
+            color: #d63031;
+            font-size: 1.2rem;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .comparison-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .comparison-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .comparison-value {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .true-false {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-top: 1rem;
+        }
+
+        .true {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .false {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .full-width-card {
+            grid-column: 1 / -1;
+        }
+
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .comparison-grid.three-col {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .instruction-banner {
+            background: linear-gradient(135deg, var(--highlight), #2d5a7b);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            animation: fadeInDown 0.8s ease-out 0.3s both;
+        }
+
+        .three-col {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔄 Inequality Operations Explorer</h1>
+            <p class="subtitle">Interactive Guide: Understanding How Operations Affect Inequalities</p>
+        </header>
+
+        <div class="operation-tabs">
+            <button class="tab-button active" data-operation="add">
+                <div class="tab-title">➕ Addition/Subtraction</div>
+                <div class="tab-subtitle">Sign: UNCHANGED</div>
+            </button>
+            <button class="tab-button" data-operation="multiply-positive">
+                <div class="tab-title">✖️ Multiply by Positive</div>
+                <div class="tab-subtitle">Sign: UNCHANGED</div>
+            </button>
+            <button class="tab-button" data-operation="multiply-negative">
+                <div class="tab-title">✖️ Multiply by Negative</div>
+                <div class="tab-subtitle">Sign: REVERSED</div>
+            </button>
+        </div>
+
+        <div class="instruction-banner">
+            <span id="instructionText">👇 Adjust the sliders to see how adding/subtracting affects inequalities</span>
+        </div>
+
+        <div class="main-grid">
+            <div class="card">
+                <h2 class="card-title">
+                    <span class="emoji">🎮</span>
+                    Interactive Controls
+                </h2>
+
+                <div class="control-panel">
+                    <div class="slider-group">
+                        <label class="slider-label">
+                            Value A: <span class="slider-value" id="valueA">3</span>
+                        </label>
+                        <input type="range" id="sliderA" min="-20" max="20" value="3" step="1">
+                    </div>
+
+                    <div class="slider-group">
+                        <label class="slider-label">
+                            Value B: <span class="slider-value" id="valueB">7</span>
+                        </label>
+                        <input type="range" id="sliderB" min="-20" max="20" value="7" step="1">
+                    </div>
+
+                    <div class="slider-group">
+                        <label class="operation-label" id="operationLabel">Operation Value</label>
+                        <label class="slider-label">
+                            <span id="operationTypeLabel">Add/Subtract:</span> <span class="slider-value" id="operationValue">5</span>
+                        </label>
+                        <input type="range" id="operationSlider" min="-20" max="20" value="5" step="1">
+                        <div class="highlight-box" style="margin-top: 1rem;">
+                            <strong id="operationStatus">Adding 5 to both sides: Sign stays the same</strong>
+                        </div>
+                    </div>
+
+                    <button class="action-button" id="resetBtn">Reset to Default Values</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">
+                    <span class="emoji">📊</span>
+                    Number Line Visualization
+                </h2>
+
+                <div class="demo-section">
+                    <h3 style="font-weight: 700; margin-bottom: 1rem; text-align: center; color: var(--dark);">
+                        Original Values
+                    </h3>
+                    <div class="number-line-demo" id="originalLine">
+                        <div class="line"></div>
+                    </div>
+                </div>
+
+                <div class="demo-section" style="background: linear-gradient(135deg, #dfe6e9, #b2bec3);">
+                    <h3 style="font-weight: 700; margin-bottom: 1rem; text-align: center; color: var(--dark);">
+                        <span id="operationDescription">After Adding 5</span>
+                    </h3>
+                    <div class="number-line-demo" id="transformedLine">
+                        <div class="line"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card full-width-card">
+                <h2 class="card-title">
+                    <span class="emoji">🔍</span>
+                    Inequality Comparison
+                </h2>
+
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <div class="comparison-title">Original Inequality</div>
+                        <div class="comparison-value" id="originalInequality">3 < 7</div>
+                        <div class="true-false true" id="originalStatus">TRUE ✓</div>
+                    </div>
+
+                    <div class="comparison-card">
+                        <div class="comparison-title">After Operation</div>
+                        <div class="comparison-value" id="newInequality">8 < 12</div>
+                        <div class="true-false" id="newStatus">TRUE ✓</div>
+                    </div>
+                </div>
+
+                <div class="step-indicator" id="stepExplanation">
+                    Set values and operation to see the transformation
+                </div>
+            </div>
+
+            <div class="card full-width-card">
+                <h2 class="card-title">
+                    <span class="emoji">💡</span>
+                    Understanding the Rules
+                </h2>
+
+                <div class="comparison-grid three-col">
+                    <div class="explanation-box" style="margin: 0;">
+                        <div class="explanation-title">➕ Add/Subtract</div>
+                        <div class="explanation-text" style="font-size: 1rem;">
+                            Adding or subtracting the same number to both sides keeps the inequality sign <strong>unchanged</strong>.
+                            <br><br>
+                            Example: If 3 &lt; 7, then 3+5 &lt; 7+5 (8 &lt; 12) ✓
+                        </div>
+                    </div>
+
+                    <div class="explanation-box" style="margin: 0; background: linear-gradient(135deg, #e3f2fd, #bbdefb); border-left-color: var(--highlight);">
+                        <div class="explanation-title">✖️ Multiply by Positive</div>
+                        <div class="explanation-text" style="font-size: 1rem;">
+                            Multiplying or dividing by a <strong>positive</strong> number keeps the inequality sign <strong>unchanged</strong>.
+                            <br><br>
+                            Example: If 3 &lt; 7, then 3×2 &lt; 7×2 (6 &lt; 14) ✓
+                        </div>
+                    </div>
+
+                    <div class="explanation-box" style="margin: 0; background: linear-gradient(135deg, #ffebee, #ffcdd2); border-left-color: var(--primary);">
+                        <div class="explanation-title">⚠️ Multiply by Negative</div>
+                        <div class="explanation-text" style="font-size: 1rem;">
+                            Multiplying or dividing by a <strong>negative</strong> number <strong>reverses</strong> the inequality sign!
+                            <br><br>
+                            Example: If 3 &lt; 7, then 3×(-2) &gt; 7×(-2) (-6 &gt; -14) ✓
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentOperation = 'add';
+        const sliderA = document.getElementById('sliderA');
+        const sliderB = document.getElementById('sliderB');
+        const operationSlider = document.getElementById('operationSlider');
+        const valueADisplay = document.getElementById('valueA');
+        const valueBDisplay = document.getElementById('valueB');
+        const operationDisplay = document.getElementById('operationValue');
+        const operationStatus = document.getElementById('operationStatus');
+        const resetBtn = document.getElementById('resetBtn');
+
+        let valueA = 3;
+        let valueB = 7;
+        let operationValue = 5;
+
+        // Tab switching
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+                button.classList.add('active');
+                currentOperation = button.dataset.operation;
+                updateOperationType();
+                updateDisplay();
+            });
+        });
+
+        function updateOperationType() {
+            const instructionText = document.getElementById('instructionText');
+            const operationLabel = document.getElementById('operationLabel');
+            const operationTypeLabel = document.getElementById('operationTypeLabel');
+            
+            if (currentOperation === 'add') {
+                instructionText.textContent = '👇 Adjust the sliders to see how adding/subtracting affects inequalities';
+                operationLabel.textContent = 'Add or Subtract Value';
+                operationTypeLabel.textContent = 'Add/Subtract:';
+                operationSlider.min = '-20';
+                operationSlider.max = '20';
+                operationSlider.value = '5';
+            } else if (currentOperation === 'multiply-positive') {
+                instructionText.textContent = '👇 Adjust the sliders to see how multiplying by positive numbers affects inequalities';
+                operationLabel.textContent = 'Multiply by Positive Value';
+                operationTypeLabel.textContent = 'Multiply by:';
+                operationSlider.min = '1';
+                operationSlider.max = '10';
+                operationSlider.value = '2';
+            } else {
+                instructionText.textContent = '⚠️ Adjust the sliders to see how multiplying by negative numbers REVERSES the inequality!';
+                operationLabel.textContent = 'Multiply by Negative Value';
+                operationTypeLabel.textContent = 'Multiply by:';
+                operationSlider.min = '-10';
+                operationSlider.max = '-1';
+                operationSlider.value = '-2';
+            }
+        }
+
+        function updateDisplay() {
+            valueA = parseInt(sliderA.value);
+            valueB = parseInt(sliderB.value);
+            operationValue = parseInt(operationSlider.value);
+
+            valueADisplay.textContent = valueA;
+            valueBDisplay.textContent = valueB;
+            operationDisplay.textContent = operationValue;
+
+            // Update operation status
+            let statusText = '';
+            let statusColor = '';
+            
+            if (currentOperation === 'add') {
+                if (operationValue >= 0) {
+                    statusText = `✓ Adding ${operationValue} to both sides: Sign stays the same`;
+                    statusColor = '#d4edda';
+                } else {
+                    statusText = `✓ Subtracting ${Math.abs(operationValue)} from both sides: Sign stays the same`;
+                    statusColor = '#d4edda';
+                }
+            } else if (currentOperation === 'multiply-positive') {
+                statusText = `✓ Multiplying by positive ${operationValue}: Sign stays the same`;
+                statusColor = '#d4edda';
+            } else {
+                statusText = `⚠️ Multiplying by NEGATIVE ${operationValue}: Sign REVERSES!`;
+                statusColor = '#ffcccb';
+            }
+            
+            operationStatus.textContent = statusText;
+            operationStatus.parentElement.style.background = statusColor;
+            operationStatus.style.color = currentOperation === 'multiply-negative' ? '#d63031' : '#155724';
+
+            drawNumberLines();
+            updateInequalities();
+        }
+
+        function drawNumberLines() {
+            let newA, newB;
+            
+            if (currentOperation === 'add') {
+                newA = valueA + operationValue;
+                newB = valueB + operationValue;
+                document.getElementById('operationDescription').textContent = 
+                    operationValue >= 0 ? `After Adding ${operationValue}` : `After Subtracting ${Math.abs(operationValue)}`;
+            } else {
+                newA = valueA * operationValue;
+                newB = valueB * operationValue;
+                document.getElementById('operationDescription').textContent = `After Multiplying by ${operationValue}`;
+            }
+            
+            drawNumberLine('originalLine', valueA, valueB);
+            drawNumberLine('transformedLine', newA, newB, true);
+        }
+
+        function drawNumberLine(containerId, valA, valB, isTransformed = false) {
+            const container = document.getElementById(containerId);
+            
+            // Remove existing markers and ticks
+            const existingElements = container.querySelectorAll('.number-marker, .number-label, .tick-mark, .tick-label-number');
+            existingElements.forEach(el => el.remove());
+
+            // Determine appropriate range dynamically
+            const minVal = Math.min(valA, valB);
+            const maxVal = Math.max(valA, valB);
+            const range = Math.max(Math.abs(minVal), Math.abs(maxVal));
+            const padding = Math.max(5, Math.ceil(range * 0.3));
+            
+            const start = Math.floor((minVal - padding) / 5) * 5;
+            const end = Math.ceil((maxVal + padding) / 5) * 5;
+            const totalRange = end - start;
+
+            // Draw tick marks at regular intervals
+            const tickInterval = totalRange > 50 ? 10 : (totalRange > 20 ? 5 : (totalRange > 10 ? 2 : 1));
+            
+            for (let i = start; i <= end; i += tickInterval) {
+                const tick = document.createElement('div');
+                tick.className = 'tick-mark';
+                const position = ((i - start) / totalRange) * 84 + 8; // 8% to 92%
+                tick.style.left = position + '%';
+                
+                // Highlight zero with thicker tick
+                if (i === 0) {
+                    tick.style.height = '30px';
+                    tick.style.width = '3px';
+                    tick.style.background = 'var(--primary)';
+                }
+                
+                const label = document.createElement('div');
+                label.className = 'tick-label-number';
+                label.textContent = i;
+                label.style.left = position + '%';
+                if (i === 0) {
+                    label.style.color = 'var(--primary)';
+                    label.style.fontWeight = '700';
+                }
+                
+                tick.appendChild(label);
+                container.appendChild(tick);
+            }
+
+            // Calculate positions for A and B
+            const posA = ((valA - start) / totalRange) * 84 + 8;
+            const posB = ((valB - start) / totalRange) * 84 + 8;
+
+            // Create marker for value A
+            const markerA = document.createElement('div');
+            markerA.className = 'number-marker';
+            markerA.style.left = posA + '%';
+            markerA.style.backgroundColor = '#E63946';
+            markerA.style.zIndex = '10';
+            markerA.textContent = 'A';
+            container.appendChild(markerA);
+
+            const labelA = document.createElement('div');
+            labelA.className = 'number-label';
+            labelA.style.left = posA + '%';
+            labelA.textContent = valA;
+            labelA.style.color = '#E63946';
+            labelA.style.borderColor = '#E63946';
+            labelA.style.zIndex = '10';
+            container.appendChild(labelA);
+
+            // Create marker for value B
+            const markerB = document.createElement('div');
+            markerB.className = 'number-marker';
+            markerB.style.left = posB + '%';
+            markerB.style.backgroundColor = '#457B9D';
+            markerB.style.zIndex = '10';
+            markerB.textContent = 'B';
+            container.appendChild(markerB);
+
+            const labelB = document.createElement('div');
+            labelB.className = 'number-label';
+            labelB.style.left = posB + '%';
+            labelB.textContent = valB;
+            labelB.style.color = '#457B9D';
+            labelB.style.borderColor = '#457B9D';
+            labelB.style.zIndex = '10';
+            container.appendChild(labelB);
+
+            // Add animation for transformed line
+            if (isTransformed) {
+                markerA.style.animation = 'fadeInUp 0.6s ease-out';
+                markerB.style.animation = 'fadeInUp 0.6s ease-out 0.1s both';
+                labelA.style.animation = 'fadeInUp 0.6s ease-out';
+                labelB.style.animation = 'fadeInUp 0.6s ease-out 0.1s both';
+            }
+        }
+
+        function getInequalitySign(a, b) {
+            if (Math.abs(a - b) < 0.001) return '=';
+            if (a < b) return '<';
+            if (a > b) return '>';
+            return '=';
+        }
+
+        function updateInequalities() {
+            const originalSign = getInequalitySign(valueA, valueB);
+            let newA, newB;
+            
+            if (currentOperation === 'add') {
+                newA = valueA + operationValue;
+                newB = valueB + operationValue;
+            } else {
+                newA = valueA * operationValue;
+                newB = valueB * operationValue;
+            }
+            
+            const newSign = getInequalitySign(newA, newB);
+
+            // Update displays
+            document.getElementById('originalInequality').textContent = `${valueA} ${originalSign} ${valueB}`;
+            document.getElementById('newInequality').textContent = `${newA} ${newSign} ${newB}`;
+
+            // Check if inequalities are true
+            const originalTrue = (originalSign === '<' && valueA < valueB) || 
+                                (originalSign === '>' && valueA > valueB) ||
+                                (originalSign === '=' && Math.abs(valueA - valueB) < 0.001);
+
+            const newTrue = (newSign === '<' && newA < newB) || 
+                           (newSign === '>' && newA > newB) ||
+                           (newSign === '=' && Math.abs(newA - newB) < 0.001);
+
+            // Update status
+            const originalStatus = document.getElementById('originalStatus');
+            if (originalTrue) {
+                originalStatus.className = 'true-false true';
+                originalStatus.textContent = 'TRUE ✓';
+            } else {
+                originalStatus.className = 'true-false false';
+                originalStatus.textContent = 'FALSE ✗';
+            }
+
+            const newStatus = document.getElementById('newStatus');
+            if (newTrue) {
+                newStatus.className = 'true-false true';
+                newStatus.textContent = 'TRUE ✓';
+            } else {
+                newStatus.className = 'true-false false';
+                newStatus.textContent = 'FALSE ✗';
+            }
+
+            // Update explanation
+            let explanation = '';
+            const stepExplanation = document.getElementById('stepExplanation');
+            
+            if (currentOperation === 'add') {
+                if (originalSign === newSign) {
+                    explanation = `✓ ${operationValue >= 0 ? 'Added' : 'Subtracted'} ${Math.abs(operationValue)}: Inequality sign stays ${originalSign}`;
+                    stepExplanation.style.background = 'linear-gradient(to right, #f8f9fa, #e9ecef)';
+                    stepExplanation.style.borderLeftColor = '#06D6A0';
+                }
+            } else if (currentOperation === 'multiply-positive') {
+                if (originalSign === newSign) {
+                    explanation = `✓ Multiplied by positive ${operationValue}: Inequality sign stays ${originalSign}`;
+                    stepExplanation.style.background = 'linear-gradient(to right, #f8f9fa, #e9ecef)';
+                    stepExplanation.style.borderLeftColor = '#06D6A0';
+                }
+            } else {
+                if (originalSign !== '=' && originalSign !== newSign) {
+                    explanation = `⚠️ Multiplied by negative ${operationValue}: Inequality REVERSED from ${originalSign} to ${newSign}`;
+                    stepExplanation.style.background = '#ffebee';
+                    stepExplanation.style.borderLeftColor = '#E63946';
+                } else if (originalSign === '=') {
+                    explanation = `Original was equal, so result is still equal (${newA} = ${newB})`;
+                }
+            }
+
+            document.getElementById('stepExplanation').textContent = explanation;
+        }
+
+        // Event listeners
+        sliderA.addEventListener('input', updateDisplay);
+        sliderB.addEventListener('input', updateDisplay);
+        operationSlider.addEventListener('input', updateDisplay);
+
+        resetBtn.addEventListener('click', () => {
+            sliderA.value = 3;
+            sliderB.value = 7;
+            
+            if (currentOperation === 'add') {
+                operationSlider.value = 5;
+            } else if (currentOperation === 'multiply-positive') {
+                operationSlider.value = 2;
+            } else {
+                operationSlider.value = -2;
+            }
+            
+            updateDisplay();
+        });
+
+        // Initial setup
+        updateOperationType();
+        updateDisplay();
+    </script>
+</body>
+</html>
